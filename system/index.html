@@ -1,1 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+<title>五好孩子后台管理界面</title>
+<link href="css/index.css" rel="stylesheet" type="text/css">
+
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/themes.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jQuery.min.2.1.1.js"></script>
+
+<style type="text/css">
+ul,li{list-style: none;}
+a:link,a:visited{text-decoration: none;}
+.list{width: 90%;border:solid 1px #316a91;margin:30px 5% 0 5%;}
+.list ul{margin: 0 0 0 -40px;}
+.list ul li{background-color:#467ca2; border:solid 1px #316a91; }
+.list ul li a{padding-left: 10px;color: #fff; font-size:12px; display: block; font-weight:bold; height:36px;line-height: 36px;position: relative;
+}
+.list ul li .inactive{ background:url(img/off.png) no-repeat 90% center;}
+.list ul li .inactives{background:url(img/on.png) no-repeat 90% center;;} 
+.list ul li ul{display: none;}
+.list ul li ul li { border-left:0; border-right:0; background-color:#6196bb; border-color:#467ca2;}
+.list ul li ul li ul{display: none;}
+.list ul li ul li a{ padding-left:20px;}
+.list ul li ul li ul li { background-color:#d6e6f1; border-color:#6196bb; }
+.last{ background-color:#d6e6f1; border-color:#6196bb; }
+.list ul li ul li ul li a{ color:#316a91; padding-left:30px;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  //左侧菜单栏点击事件
+  $('.inactive').click(function(){
+    if($(this).siblings('ul').css('display')=='none'){
+      $(this).parent('li').siblings('li').removeClass('inactives');
+      $(this).addClass('inactives');
+      $(this).siblings('ul').slideDown(100).children('li');
+      if($(this).parents('li').siblings('li').children('ul').css('display')=='block'){
+        $(this).parents('li').siblings('li').children('ul').parent('li').children('a').removeClass('inactives');
+        $(this).parents('li').siblings('li').children('ul').slideUp(100);
+      }
+    }else{
+      //控制自身变成+号
+      $(this).removeClass('inactives');
+      //控制自身菜单下子菜单隐藏
+      $(this).siblings('ul').slideUp(100);
+      //控制自身子菜单变成+号
+      $(this).siblings('ul').children('li').children('ul').parent('li').children('a').addClass('inactives');
+      //控制自身菜单下子菜单隐藏
+      $(this).siblings('ul').children('li').children('ul').slideUp(100);
+      //控制同级菜单只保持一个是展开的（-号显示）
+      $(this).siblings('ul').children('li').children('a').removeClass('inactives');
+    }
+  })
+});
+</script>
+</head>
+<body>
+<script>
+//页面加载时检查cookie
+window.onload=function(){
+  var username=getCookie("username");
+  var status=getCookie("bool");
+  if(username==""||status=="") window.location.href="login.html";
+  else document.getElementById("name").innerText=username;
+}
+//清除cookie方法
+function delCookie(){
+  var exp = new Date();
+  exp.setTime(exp.getTime() - 1);
+  var cval=getCookie("username");
+  if(cval!=null)
+  document.cookie= "username="+cval+";expires="+exp.toGMTString();
+  window.location.reload();
+}
+//获取cookie值
+function getCookie(c_name){
+  if (document.cookie.length>0)
+    {
+    c_start=document.cookie.indexOf(c_name + "=")
+    if (c_start!=-1)
+      { 
+      c_start=c_start + c_name.length+1 
+      c_end=document.cookie.indexOf(";",c_start)
+      if (c_end==-1) c_end=document.cookie.length
+      return unescape(document.cookie.substring(c_start,c_end))
+      } 
+    }
+  return ""
+}
+
+//退出登录按钮显示和隐藏
+function show(){
+  if(document.getElementById("exit").style.display=="")
+  document.getElementById("exit").style.display="none";
+  else
+  document.getElementById("exit").style.display="";
+}
+</script>
+<div class="navigation">
+<!-- <div class="logo"><a href=""><img src="img/logo.png" /></a></div>  -->
+<div id="nav_text" class="nav_text" onClick="show()"><span id="name"></span><div id="triangle-down"></div></div>
+<div id="exit" class="exit" style="display: none;" onclick="delCookie()">退出登录</div>
+</div>
+
+<div class="down">
+<div class="left_frame"><!-- 左侧选择栏 -->
+<div class="list">
+  <ul class="yiji">
+
+    <li><a href="#" class="inactive">活动管理</a>
+      <ul style="display: none">
+        <li><a class="inactive active">亲子活动</a>
+          <ul>
+            <li class="last"><a href="parent_child_activity_record.php" target=mainFrame>活动记录</a></li>
+            <li class="last"><a href="parent_child_activity_check.php" target=mainFrame>活动审核</a></li> 
+          </ul>
+        </li> 
+        <li class="last"><a href="carnival.php" target=mainFrame>五好嘉年华</a></li> 
+        <li class="last"><a href="share_meeting.php" target=mainFrame>五好分享会</a></li> 
+        <li class="last"><a href="share_article.php" target=mainFrame>分享必读</a></li>
+        <li class="last"><a href="activity_apply.php" target=mainFrame>活动报名</a></li>         
+        <li class="last"><a href="activity_label.php" target=mainFrame>活动标签</a></li> 
+        <li class="last"><a href="point_rules.php" target=mainFrame>积分规则</a></li>
+        <li class="last"><a href="float_title.php" target=mainFrame>页面横幅</a></li>
+      </ul>
+    </li>
+    <li><a href="#" class="inactive">行家管理</a>
+      <ul style="display: none">
+        <li class="last"><a href="expert_info.php" target=mainFrame>行家信息</a></li> 
+        <li class="last"><a href="expert_apply.php" target=mainFrame>行家审核</a></li> 
+      </ul>
+    </li>
+    <li><a href="#" class="inactive">用户管理</a>
+      <ul style="display: none">
+        <li class="last"><a href="user_info.php" target=mainFrame>个人信息</a></li> 
+        <li class="last"><a href="point_record.php" target=mainFrame>积分记录</a></li>  
+      </ul>
+    </li>
+  </ul>
+</div>
+  
+  
+</div>
+<div class="right_frame"><!-- 右侧页面框架 -->
+<div class="right_web">
+      <iframe align="middle" id="mainFrame" name="mainFrame" frameborder="0"  frameborder=0 src="blank.html" width="100%" height="100%" ></iframe>
+</div>  
+</div>
+</div>
+
+
+
+</body>
+</html>
 
